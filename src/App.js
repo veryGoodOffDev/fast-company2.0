@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Users from "./layouts/users";
+
+import api from "./api";
+import NavBar from "./components/navBar";
+import { Redirect, Route, Switch } from "react-router-dom";
+import Main from "./layouts/main";
+import Login from "./layouts/login";
+// import User from "./components/user";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    
+    return (
+        <div>
+            <NavBar/>
+            <Switch>
+                <Route path='/' exact component={Main}/>
+                <Route path='/login' component={Login}/>
+                <Route path='/users/:userId?' component={Users}/>
+                <Redirect to="/"/>
+            </Switch>
+            {/* {users && (
+                <Users
+                    onDelete={handleDelete}
+                    onToggleBookMark={handleToggleBookMark}
+                    users={users}
+                />
+            )} */}
+        </div>
+    );
 }
 
 export default App;
