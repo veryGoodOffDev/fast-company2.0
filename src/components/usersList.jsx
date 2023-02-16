@@ -10,6 +10,7 @@ import _ from "lodash"
 const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
+    const [searchQuery, setSearchQuery] = useState("");
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({iter:"name", order:"asc"})
 
@@ -46,6 +47,10 @@ const UsersList = () => {
         setSelectedProf(item);
     };
 
+    const handleSearchQuery = ({target}) => {
+        setSearchQuery(target.value)
+    }
+
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
@@ -56,7 +61,9 @@ const UsersList = () => {
         // console.log(item)
     }
     if (users) {
-        const filteredUsers = selectedProf
+        const filteredUsers = searchQuery?
+        users.filter((user) =>user.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1)
+       : selectedProf
             ? users.filter(
                   (user) =>
                       JSON.stringify(user.profession) ===
@@ -94,7 +101,13 @@ const UsersList = () => {
                     </div>
                 )}
                 <div className="d-flex flex-column">
-                    <input type="text" name="searchQuery" placeholder="Search..."/>
+                    <input 
+                        type="text" 
+                        name="searchQuery" 
+                        placeholder="Search..."
+                        onChange={handleSearchQuery}
+                        value={searchQuery}
+                        />
                     <SearchStatus length={count} />
                     {count > 0 && (
                         <UserTable
