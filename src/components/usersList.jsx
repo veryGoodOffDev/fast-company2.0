@@ -41,13 +41,15 @@ const UsersList = () => {
     }, []);
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchQuery]);
 
     const handleProfessionSelect = (item) => {
+        if(searchQuery!== "") setSearchQuery("")
         setSelectedProf(item);
     };
 
     const handleSearchQuery = ({target}) => {
+        setSelectedProf(undefined)
         setSearchQuery(target.value)
     }
 
