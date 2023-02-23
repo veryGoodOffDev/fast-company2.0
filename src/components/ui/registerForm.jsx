@@ -1,10 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
+import api from "../../api"
+import SelectField from '../common/form/selectField';
+import RadioField from '../common/form/radioField';
 
-const LoginForm = () => {
-    const [data, setData] = useState({email:"", password: ""});
+const RegisterForm = () => {
+    const [data, setData] = useState({email:"", password: "", profession:"", sex:"male"});
     const [errors, setErrors] = useState({});
+    const [professions, setProfession] = useState();
+
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfession(data));
+    }, []);
 
     const handleChange = ({target}) => {
         setData((prevState) => ({...prevState, [target.name]: target.value}) )
@@ -35,6 +44,11 @@ const LoginForm = () => {
                 value: 8,
             },
         },
+        profession: {
+            isRequired: {
+                message: "Обязательно нужно выбрать"
+            }
+        }
     }
 
     useEffect(() => {
@@ -82,6 +96,23 @@ const LoginForm = () => {
                 onChange = {handleChange}
                 error={errors.password}
                 />
+            <SelectField
+                label="Выберите вашу профессию"
+                defaulOption="Choose..."
+                options={professions}
+                onChange = {handleChange}
+                value = {data.profession}
+                error={errors.profession}
+                />
+            <RadioField options={[
+                        {name:"Male", value: "male"},
+                        {name:"Female", value: "female"}
+                        ]}
+                        value = {data.sex}
+                        name = "sex"
+                        onChange={handleChange}
+                        />    
+  
             <button type='submit'
                      className='btn btn-primary sm p-1 col-md-3 offset-md-3'
                      disabled = {!isValid}
@@ -105,4 +136,4 @@ const LoginForm = () => {
     )
 }
  
-export default LoginForm;
+export default RegisterForm;
