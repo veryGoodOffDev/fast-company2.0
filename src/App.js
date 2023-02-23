@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Users from "./layouts/users";
 
 import api from "./api";
-import NavBar from "./components/navBar";
+import NavBar from "./components/ui/navBar";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Main from "./layouts/main";
 import Login from "./layouts/login";
