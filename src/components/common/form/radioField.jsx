@@ -1,7 +1,13 @@
 import React from 'react';
 
 const RadioField = ({options, name, onChange, value, label}) => {
-    return <div className='mb4'>
+
+    const handleChange = ({target}) => {
+        onChange({name:[target.name], value:target.value})
+    }
+
+
+    return <div className='mb-4'>
             <label className="form-label">
                 {label}
             </label>
@@ -14,7 +20,7 @@ const RadioField = ({options, name, onChange, value, label}) => {
             id={option.name +"_"+option.value} 
             value={option.value}
             checked={option.value===value}
-            onChange={onChange}
+            onChange={handleChange}
             />
     <label className="form-check-label" htmlFor={option.name +"_"+option.value}>
         {option.name}
