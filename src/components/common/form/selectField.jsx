@@ -39,11 +39,13 @@ const SelectField = ({
                         </option>
                         {
                             optionsArray && optionsArray.map((option)=> (
-                                <option  
+                                <option 
+                                key={option.name +"_"+option.value} 
                                 value={option.value}
-                                key={option.value}>
+                                >
                                 {option.name}
-                                </option>))
+                                </option>
+                                ))
                         }
                 </select>
    {error && <div id="validationServer04Feedback" className="invalid-feedback">

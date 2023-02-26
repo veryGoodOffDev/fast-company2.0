@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
+import CheckBoxField from '../common/form/checkBoxField';
+import * as yup from 'yup';
 
 const LoginForm = () => {
-    const [data, setData] = useState({email:"", password: ""});
+    const [data, setData] = useState({email:"", password: "", stayOn:false});
     const [errors, setErrors] = useState({});
 
     // const handleChange = ({target}) => {
@@ -15,6 +17,12 @@ const LoginForm = () => {
         setData((prevState) => ({...prevState, [target.name]: target.value}) )
         // console.log(e.target.name)
     }
+
+    validateScheme = yup.object().shape({
+        email:yup.string().required("Email обязательно для заполнения").email("Введен некорректно"),
+        password:yup.string().required("Обязательно заполнитьт").matches()
+    })
+
 
     const validatorConfig = {
         email:{
@@ -87,6 +95,13 @@ const LoginForm = () => {
                 onChange = {handleChange}
                 error={errors.password}
                 />
+            <CheckBoxField 
+                        value={data.stayOn}
+                        onChange={handleChange}
+                        name = "stayOn"
+                        > 
+                        <a href='#'>Оставаться в системе</a>
+            </CheckBoxField>
             <button type='submit'
                      className='btn btn-primary sm p-1 col-md-3 offset-md-3'
                      disabled = {!isValid}
