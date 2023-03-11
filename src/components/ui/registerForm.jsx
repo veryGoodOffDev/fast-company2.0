@@ -119,6 +119,7 @@ const RegisterForm = () => {
             <SelectField
                 label="Выберите вашу профессию"
                 defaulOption="Choose..."
+                name = "profession"
                 options={professions}
                 onChange = {handleChange}
                 value = {data.profession}
@@ -135,6 +136,7 @@ const RegisterForm = () => {
             <MultiSelectField 
                         options={qualities} 
                         onChange={handleChange} 
+                        defaulValue = {data.qualities}
                         name="qualities"
                         label="Выберите ваши качества"
                         />   
@@ -148,7 +150,7 @@ const RegisterForm = () => {
             </CheckBoxField>         
   
             <button type='submit'
-                     className='btn btn-primary sm p-1 col-md-3 offset-md-3'
+                     className='btn btn-primary sm p-1 col-md-5 offset-md-3 mb-4'
                      disabled = {!isValid}
                      >Отправить</button>
         {/* <div className='mb-3 m-1'>

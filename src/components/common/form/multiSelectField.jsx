@@ -1,7 +1,13 @@
 import React from 'react';
 import Select from 'react-select'
 
-const MultiSelectField = ({options, onChange, name, label }) => {
+const MultiSelectField = ({
+    options, 
+    onChange, 
+    name, 
+    label,
+    defaultValue, 
+                    }) => {
 
     const optionsArray = !Array.isArray(options) && typeof options === "object"
             ?
@@ -20,6 +26,7 @@ const MultiSelectField = ({options, onChange, name, label }) => {
                 <Select  isMulti
                     closeMenuOnSelect={false}
                     options={optionsArray}
+                    defaultValue = {defaultValue}
                     className="basic-multi-select"
                     classNamePrefix="select"
                     onChange={handleChange}
