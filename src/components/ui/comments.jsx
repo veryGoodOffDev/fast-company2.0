@@ -1,57 +1,52 @@
+import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import api from "../../api";
+import AddCommentForm from "../common/comments/addCommentForm";
+import CommentsList from "../common/comments/commentList";
 
-const Comments = ({ user, userId }) => {
-  const [comments, setComments] = useState();
+const Comments = () => {
+  const { userId } = useParams();
+  const [comments, setComments] = useState([]);
   useEffect(() => {
     api.comments.fetchCommentsForUser(userId).then((data) => setComments(data));
   }, []);
   console.log(comments);
-
-  const handleDelete = (id) => {
+  const handleSubmit = (data) => {
+    api.comments
+      .add({ ...data, pageId: userId })
+      .then((data) => [...comments, data]);
+  };
+  const handleRemoveComment = (id) => {
     // console.log(id);
     // setComments(comments.filter((comment) => comment._id !== id));
-    api.comments.remove(id);
-    setComments(comments);
+    api.comments.remove(id).then((id) => {
+      setComments(comments.filter((x) => x._id !== id));
+    });
   };
+  const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
 
-  return comments ? (
-    comments.map((comment) => (
-      <div className="bg-light card-body  mb-3" key={comment._id}>
-        <div className="row">
-          <div className="col">
-            <div className="d-flex flex-start ">
-              <img
-                src="https://api.dicebear.com/5.x/croodles/svg?seed=Aneka"
-                className="rounded-circle shadow-1-strong me-3"
-                alt="avatar"
-                width="65"
-                height="65"
-              />
-              <div className="flex-grow-1 flex-shrink-1">
-                <div className="mb-4">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <p className="mb-1 ">
-                      {user.name}
-                      <span className="small">{comment.created_at}</span>
-                    </p>
-                    <button
-                      className="btn btn-sm text-primary d-flex align-items-center"
-                      onClick={() => handleDelete(comment._id)}
-                    >
-                      <i className="bi bi-x-lg"></i>
-                    </button>
-                  </div>
-                  <p className="small mb-0">{comment.content}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+  return (
+    <>
+      <div className="card mb-2">
+        {" "}
+        <div className="card-body ">
+          <AddCommentForm onSubmit={handleSubmit} />
         </div>
       </div>
-    ))
-  ) : (
-    <h1>Loading...</h1>
+      {sortedComments.length > 0 && (
+        <div className="card mb-3">
+          <div className="card-body">
+            <h2>Comments</h2>
+            <hr />
+            <CommentsList
+              comments={sortedComments}
+              omRemove={handleRemoveComment}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

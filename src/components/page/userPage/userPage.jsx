@@ -23,7 +23,7 @@ const UserPage = ({ userId }) => {
             <MeetingsCard value={user.completedMeetings} />
           </div>
           <div className="col-md-8">
-            <Comments user={user} userId={userId} />
+            <Comments/>
           </div>
         </div>
       </div>
